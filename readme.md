@@ -19,7 +19,6 @@ Also a private development whl package containing these changes is included with
 ## Implementation Notes
 Communicating with a vault where message encryption is enabled should be fairly transparent to the code which is communicating with the vault.  Messages which need to be protected will be protected by the Key Vault SDK before they are sent to the service, and likewise responses will be unprotected in the SDK before the result is handed back.  Therefore code which calls methods that use message encryption, such as wrap and unwrap is the same regardless of whether message encryption is enabled.
 
-mcrypt_samply.py L95
 
     # create a random AES key to wrap
     to_wrap = os.urandom(16)
@@ -88,6 +87,6 @@ However, some changes are needed to ensure your code can authenticate against a 
 
         # return a new AccessToken with the scheme, AAD access_token, and POP key
         return AccessToken(scheme, token['access_token'], token.get('pop_key', None))
-        
+
 It should be noted that _autheticate will handle authentication for both methods requiring message encryption, and those which do not, so this code can also be used on vaults which do not support message encryption.
 
