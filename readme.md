@@ -3,18 +3,37 @@
 This sample demonstrates communications to a Key Vault with message encryption enabled.  The sample connects to a pre-existing vault which enables this feature, creates a key in that vault which it will use to wrap and unwrap an AES key created by the client.
 
 ## Running the sample:
-This sample requires changes to the azure-keyvault Python SDK package which are not currently, published.  These changes are available in a fork of the python sdk repo, https://github.com/schaabs/azure-sdk-for-python/tree/mcrypt.  
+This sample requires changes to the azure-keyvault Python SDK package which are not currently, published.  The code for these changes are available in a fork of the python sdk repo, https://github.com/schaabs/azure-sdk-for-python/tree/mcrypt.  
 
-Also a private development whl package containing these changes is included with the sample 'azure_keyvault-0.3.8+dev-py2.py3-none-any.whl'.
+Also a private development whl package containing these changes is included with the sample 'azure_keyvault-0.3.8+dev-py2.py3-none-any.whl' which can be installed through pip.  It's recommended that you do this in a python virtual environment.
 
-1. pip install 'azure_keyvault-0.3.8+dev-py2.py3-none-any.whl'
-2. set the needed environment variables
+
+1. If you don't already have it, [install Python](https://www.python.org/downloads/).
+
+2. We recommend using a [virtual environment](https://docs.python.org/3/tutorial/venv.html) to run this example, but it's not mandatory.
+
+3. Clone the repository.
+
+        git clone https://github.com/schaabs/key-vault-python-message-encryption.git
+
+4. install the private Azure Key Vault SDK
+        
+        pip install 'azure_keyvault-0.3.8+dev-py2.py3-none-any.whl'
+
+5. Create an Azure service principal, using 
+[Azure CLI](http://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/),
+[PowerShell](http://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal/)
+or [Azure Portal](http://azure.microsoft.com/documentation/articles/resource-group-create-service-principal-portal/).
+
+6. Set the needed environment variables in your current shell
 
         AZURE_VAULT_URL=<EMS enabled vault url>
         AZURE_CLIENT_ID=<client id with access to the vault>
         AZURE_CLIENT_SECRET=<client secret>
 
-3. python mcrypt_sample.py
+7. Run the sample
+        
+        python mcrypt_sample.py
 
 ## Implementation Notes
 Communicating with a vault where message encryption is enabled should be fairly transparent to the code which is communicating with the vault.  Messages which need to be protected will be protected by the Key Vault SDK before they are sent to the service, and likewise responses will be unprotected in the SDK before the result is handed back.  Therefore code which calls methods that use message encryption, such as wrap and unwrap is the same regardless of whether message encryption is enabled.
